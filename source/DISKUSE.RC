@@ -1,0 +1,308 @@
+#include <os2.h>
+#include "diskuse.h"
+#include "diskdlg.h"                   /* see DISKUSE.DLG                     */
+
+/******************************************************************************/
+/* Standard menu bar definition for client window.                            */
+/******************************************************************************/
+
+
+MENU   idFrameWindow
+  {
+   SUBMENU "~Options",                         IDM_DISK
+    {
+     MENUITEM "~Refresh \tCtrl+R",      IDM_REFRESH
+     MENUITEM "~Settings... \tCtrl+S",  IDM_SETTINGS
+     MENUITEM SEPARATOR
+     MENUITEM "~Fonts... \tCtrl+F",     IDM_FONT
+     MENUITEM "~Print... \tCtrl+P",     IDM_PRINT
+    }
+   SUBMENU "~Drives",                          IDM_DRIVE
+    {
+    }
+   SUBMENU "~View",                      IDM_VIEW
+    {
+     MENUITEM "Dire~ctory List \tCtrl+C",  IDM_DIRLIST
+     MENUITEM "~Legend \tCtrl+L",          IDM_LEGEND
+     MENUITEM "~All Drives Info \tCtrl+A", IDM_ALL
+    }
+   SUBMENU "~Help",                      IDM_HELP
+    {
+     MENUITEM    "Help ~Index",          SC_HELPINDEX,    MIS_SYSCOMMAND
+     MENUITEM    "~General Help",        SC_HELPEXTENDED, MIS_SYSCOMMAND
+     MENUITEM    "~Using Help",          IDM_USINGHELP
+     MENUITEM    "~Keys Help",           SC_HELPKEYS,     MIS_SYSCOMMAND
+     MENUITEM SEPARATOR
+     MENUITEM    "~Product Information", IDM_HELPPRODINFO
+    }
+  }
+
+MENU   idPopup
+  {
+    MENUITEM "~Copy",      IDM_COPY
+    MENUITEM "~Delete",    IDM_DELETE
+    MENUITEM "~Move",      IDM_MOVE
+    MENUITEM SEPARATOR
+    MENUITEM "Ma~ke root", IDM_MAKEROOT
+    MENUITEM SEPARATOR
+    MENUITEM "Disk ~Root", IDM_ROOT
+  }
+
+/******************************************************************************/
+/* Standard accelerator table for menu bar choices.                           */
+/******************************************************************************/
+
+ACCELTABLE idFrameWindow
+ {
+  "s",     IDM_SETTINGS, CHAR,       CONTROL
+  "r",     IDM_REFRESH,  CHAR,       CONTROL
+  "a",     IDM_ALL,      CHAR,       CONTROL
+  "l",     IDM_LEGEND,   CHAR,       CONTROL
+  "c",     IDM_DIRLIST,  CHAR,       CONTROL
+  "f",     IDM_FONT,     CHAR,       CONTROL
+  "p",     IDM_PRINT,    CHAR,       CONTROL
+ }
+
+/******************************************************************************/
+/* String table for most text displayed in application controls. Use          */
+/* WinLoadString in window procedure to retrieve these.                       */
+/******************************************************************************/
+
+STRINGTABLE
+  {
+   IDS_TITLEBAR   "DISKUSE: PM Graphical Disk Usage"
+   IDS_HELPTITLE  "DISKUSE Help"
+   IDS_HELPNAME   "DISKUSE.HLP"
+   IDS_ININAME    "DISKUSE.INI"
+   IDS_EXITPROMPT "Are you sure you want to quit?"
+   IDS_TITLEEXIT  "Exit"
+   IDS_REFRESH    "Are you sure you want to refresh?"
+   IDS_TITLEREF   "Refresh"
+   IDS_OTHER      "OTHER"
+   IDS_FREE       "FREE"
+   IDS_TOTAL      "TOTAL"
+   IDS_DRIVE      "DRIVE"
+   IDS_VOLUME     "VOLUME"
+   IDS_LEGEND     "Legend"
+   IDS_DIRLIST    "Directory List"
+   IDS_ALL        "All Drives Information"
+   IDS_WARNING    "Warning"
+   IDS_THRESFREE  "Free space under"
+   IDS_THRESSWAP  "SWAPPER.DAT size over"
+   IDS_BYTES      "bytes"
+   IDS_KBYTES     "KB"
+   IDS_MBYTES     "MB"
+   IDS_FREE_L     "free"
+   IDS_TOTAL_L    "total"
+   IDS_LISTHDRLEFT  "Directory             Dir. Size     %  Cum. Size     %  Files"
+   IDS_LISTHDRRIGHT "Dir. Size     %  Cum. Size     %  Files  Directory"
+   IDS_PATIENT    "Reading drive information. Stand by."
+   IDS_INSTRUCT   "Double click on pie chart for directory details."
+   IDS_MOVETITLE  "Move Directory"
+   IDS_MOVEERROR  "Move directory error. DosMove() return code:"
+   IDS_COPYTITLE  "Move Directory"
+   IDS_COPYERROR  "Copy directory error. DosCopy() return code:"
+   IDS_ROOTTITLE  "Disk Root"
+   IDS_ROOTERROR  "Already in the real disk root (ROOT) of the drive."
+   IDS_MKRTTITLE  "Make Root"
+   IDS_MKRTERROR  "Already in the root called"
+   IDS_DIRTITLE   "Target Directory"
+   IDS_DIRERROR   "Invalid target directory. Correct format is D:\\PATH\\FILENAME.EXT."
+   IDS_DELETETITLE  "Delete Directory"
+   IDS_DELETEWARN   "This directory and all its subdirectories will be deleted. Delete"
+   IDS_DELETEERROR1 "Delete directory error. Return code:"
+   IDS_DELETEERROR2 "Delete directory error. DosDelete() return code:"
+   IDS_SELECT     "No directory selected. Click on left mouse button to select a directory."
+   IDS_SETTINGS   "Settings"
+   IDS_OPTIONS    "~Options"
+   IDS_GRAPH      "~Graph"
+   IDS_DIRECTORY  "Directory"
+   IDS_DIRSIZE    "Dir. Size"
+   IDS_CUMSIZE    "Cum. Size"
+   IDS_PERCENT    "%"
+   IDS_FILES      "Files"
+   IDS_FONTTITLE  "Fonts"
+   IDS_FONTTEXT   "Changes to the font will be effective only after you exit DISKUSE."
+
+   IDS_ERROR           "DISKUSE Error"
+   IDS_ERROR_MEMORY    "Severe error allocating container record."
+
+   IDS_PRINTERROR      "Print Error"
+   IDS_ERROR_PRINT_1   "DosAllocMem() failed."
+   IDS_ERROR_PRINT_2   "SplEnumQueue() failed. Return code is"
+   IDS_ERROR_PRINT_3   "DevOpenDC() failed. Return code is"
+   IDS_ERROR_PRINT_4   "GpiCreatePS() failed. Return code is"
+   IDS_PRINTTEXT       "Print"
+   IDS_STOPPRINT       "Are you sure you want to cancel the print job?"
+   IDS_PRINTLIST       "Printing directory list."
+   IDS_PRINTCHART      "Printing pie chart."
+   IDS_PRINTLEGEND     "Printing legend."
+
+  }
+
+/***************************************************************************/
+/* Help table definitions. HELPTABLE relates to all top-level windows and  */
+/* HELPSUBTABLE for child window help.                                     */
+/***************************************************************************/
+
+HELPTABLE IDH_TABLE_MAIN
+  {
+   HELPITEM idFrameWindow,   IDH_SUBTABLE_MAIN,      IDH_MAIN
+   HELPITEM ID_NBWINDOW,     IDH_SUBTABLE_NOTEBOOK,  IDH_SETTINGS
+   HELPITEM ID_LEGEND,       IDH_SUBTABLE_LEGEND,    IDH_LEGEND
+   HELPITEM ID_DIRLIST,      IDH_SUBTABLE_DIRLIST,   IDH_DIRLIST
+   HELPITEM ID_ALL,          IDH_SUBTABLE_ALL,       IDH_ALL
+   HELPITEM IDD_REFRESH,     IDH_SUBTABLE_REFRESH,   IDH_REFRESH
+   HELPITEM IDD_DIRECTORY,   IDH_SUBTABLE_DIRECTORY, IDH_DIRECTORY
+   HELPITEM IDD_PRINT,       IDH_SUBTABLE_PRINT,     IDH_PRINT
+   HELPITEM IDD_PRINTSTATUS, IDH_SUBTABLE_PRINTSTAT, IDH_PRINTSTAT
+   HELPITEM IDD_STOPPRINT,   IDH_SUBTABLE_STOPPRINT, IDH_STOPPRINT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_MAIN
+  {
+   HELPSUBITEM IDM_DISK,         IDH_MENU_DISK
+   HELPSUBITEM IDM_DRIVE,        IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_A,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_B,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_C,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_D,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_E,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_F,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_G,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_H,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_I,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_J,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_K,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_L,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_M,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_N,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_O,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_P,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_Q,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_R,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_S,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_T,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_U,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_V,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_W,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_X,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_Y,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_DRIVE_Z,      IDH_MENU_DRIVE
+   HELPSUBITEM IDM_REFRESH,      IDH_MENU_REFRESH
+   HELPSUBITEM IDM_SETTINGS,     IDH_MENU_SETTINGS
+   HELPSUBITEM IDM_VIEW,         IDH_MENU_VIEW
+   HELPSUBITEM IDM_LEGEND,       IDH_MENU_LEGEND
+   HELPSUBITEM IDM_DIRLIST,      IDH_MENU_DIRLIST
+   HELPSUBITEM IDM_ALL,          IDH_MENU_ALL
+   HELPSUBITEM IDM_FONT,         IDH_MENU_FONT
+   HELPSUBITEM IDM_PRINT,        IDH_MENU_PRINT
+   HELPSUBITEM IDM_HELP,         IDH_MENU_HELP
+   HELPSUBITEM IDM_USINGHELP,    IDH_MENU_HELPUSING
+   HELPSUBITEM SC_HELPINDEX,     IDH_MENU_HELPINDEX
+   HELPSUBITEM SC_HELPEXTENDED,  IDH_MENU_HELPGENERAL
+   HELPSUBITEM SC_HELPKEYS,      IDH_MENU_HELPKEYS
+   HELPSUBITEM IDM_HELPPRODINFO, IDH_MENU_HELPPRODINFO
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_NOTEBOOK
+  {
+   HELPSUBITEM ID_NBWINDOW,      IDH_SETTINGS
+   HELPSUBITEM IDC_DIRLIST,      IDH_SETTINGS_DIRLIST
+   HELPSUBITEM IDC_LEGEND,       IDH_SETTINGS_LEGEND
+   HELPSUBITEM IDC_ALL,          IDH_SETTINGS_ALL
+   HELPSUBITEM IDC_EXIT,         IDH_SETTINGS_EXIT
+   HELPSUBITEM IDC_REFRESH,      IDH_SETTINGS_REFRESH
+   HELPSUBITEM IDB_BYTES,        IDH_SETTINGS_UNITS
+   HELPSUBITEM IDB_KBYTES,       IDH_SETTINGS_UNITS
+   HELPSUBITEM IDB_MBYTES,       IDH_SETTINGS_UNITS
+   HELPSUBITEM IDB_RIGHT,        IDH_SETTINGS_TREESHOW
+   HELPSUBITEM IDB_LEFT,         IDH_SETTINGS_TREESHOW
+   HELPSUBITEM IDP_SETDEF,       IDH_SETTINGS_DEFAULT
+   HELPSUBITEM IDP_SETHELP,      IDH_SETTINGS
+
+   HELPSUBITEM IDC_REFMINUTES,   IDH_AUTOREF_INTERVAL
+   HELPSUBITEM IDC_THRESFREE,    IDH_AUTOREF_THRESFREE
+   HELPSUBITEM IDC_THRESSWAP,    IDH_AUTOREF_THRESSWAP
+   HELPSUBITEM IDC_ALARMFREE,    IDH_AUTOREF_WARNFREE
+   HELPSUBITEM IDC_MESSAGEFREE,  IDH_AUTOREF_WARNFREE
+   HELPSUBITEM IDE_COMMANDFREE,  IDH_AUTOREF_WARNFREE
+   HELPSUBITEM IDC_ALARMSWAP,    IDH_AUTOREF_WARNSWAP
+   HELPSUBITEM IDC_MESSAGESWAP,  IDH_AUTOREF_WARNSWAP
+   HELPSUBITEM IDE_COMMANDSWAP,  IDH_AUTOREF_WARNSWAP
+   HELPSUBITEM IDP_NONE,         IDH_AUTOREF_NONE
+   HELPSUBITEM IDP_REFHELP,      IDH_AUTOREF
+
+   HELPSUBITEM IDB_TOTAL,        IDH_GRAPH_TYPE
+   HELPSUBITEM IDB_USED,         IDH_GRAPH_TYPE
+   HELPSUBITEM IDB_ALLDIR,       IDH_GRAPH_LEVEL
+   HELPSUBITEM IDB_1ST,          IDH_GRAPH_LEVEL
+   HELPSUBITEM IDB_PERCENTON,    IDH_GRAPH_DISPLAY
+   HELPSUBITEM IDB_SIZEON,       IDH_GRAPH_DISPLAY
+   HELPSUBITEM IDB_DISPLAYNONE,  IDH_GRAPH_DISPLAY
+   HELPSUBITEM IDC_SWAPPIE,      IDH_GRAPH_SWAPPER
+   HELPSUBITEM IDC_SWAPSTAT,     IDH_GRAPH_SWAPPER
+   HELPSUBITEM IDC_MAXPIES,      IDH_GRAPH_MAXPIES
+   HELPSUBITEM IDP_OPTDEF,       IDH_GRAPH_DEFAULT
+   HELPSUBITEM IDP_OPTHELP,      IDH_GRAPH
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_LEGEND
+  {
+   HELPSUBITEM ID_LEGEND,       IDH_LEGEND
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_DIRLIST
+  {
+   HELPSUBITEM ID_DIRLIST,      IDH_DIRLIST
+   HELPSUBITEM IDM_MOVE,        IDH_POPUP_MOVE
+   HELPSUBITEM IDM_DELETE,      IDH_POPUP_DELETE
+   HELPSUBITEM IDM_COPY,        IDH_POPUP_COPY
+   HELPSUBITEM IDM_MAKEROOT,    IDH_POPUP_MAKEROOT
+   HELPSUBITEM IDM_ROOT,        IDH_POPUP_ROOT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_ALL
+  {
+   HELPSUBITEM ID_ALL,          IDH_ALL
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_REFRESH
+  {
+   HELPSUBITEM IDD_REFRESH,     IDH_REFRESH
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_DIRECTORY
+  {
+   HELPSUBITEM IDD_DIRECTORY,   IDH_DIRECTORY
+   HELPSUBITEM IDE_DIRECTORY,   IDH_DIRECTORY
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_PRINT
+  {
+   HELPSUBITEM IDD_PRINT,       IDH_PRINT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_PRINTSTAT
+  {
+   HELPSUBITEM IDD_PRINTSTATUS, IDH_PRINTSTAT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_STOPPRINT
+  {
+   HELPSUBITEM IDD_STOPPRINT,   IDH_STOPPRINT
+  }
+
+/******************************************************************************/
+/* Standard icon and bitmap definitions. Use the Icon Editor to create both   */
+/* an icon and bitmap (32x32) of your application.                            */
+/******************************************************************************/
+
+ICON idFrameWindow DISKUSE.ICO
+BITMAP 301         DISKUSE.BMP
+
+/******************************************************************************/
+/* Include window resource files in here too!                                 */
+/******************************************************************************/
+
+rcinclude diskuse.dlg

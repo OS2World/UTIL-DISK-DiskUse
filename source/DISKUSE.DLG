@@ -1,0 +1,213 @@
+DLGINCLUDE 1 "D:\pmwork\diskuse\DISKDLG.H"
+
+DLGTEMPLATE IDD_AUTOREF LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", IDD_AUTOREF, 113, 27, 180, 160, NOT FS_DLGBORDER |
+            WS_VISIBLE
+    BEGIN
+        LTEXT           "Refresh Interval", 581, 8, 145, 74, 8
+        CONTROL         "", IDC_REFMINUTES, 83, 143, 38, 12, WC_SPINBUTTON,
+                        SPBS_ALLCHARACTERS | SPBS_NUMERICONLY | SPBS_MASTER |
+                        SPBS_SERVANT | SPBS_JUSTDEFAULT | SPBS_JUSTRIGHT |
+                        SPBS_FASTSPIN | WS_TABSTOP | WS_VISIBLE
+        LTEXT           "Minutes", 584, 126, 145, 38, 8, NOT WS_GROUP
+        GROUPBOX        "Threshold", 326, 8, 106, 158, 36
+        LTEXT           "Free space          <", 327, 20, 124, 84, 8, NOT
+                        WS_GROUP
+        CONTROL         "", IDC_THRESFREE, 116, 122, 27, 12, WC_SPINBUTTON,
+                        SPBS_ALLCHARACTERS | SPBS_NUMERICONLY | SPBS_MASTER |
+                        SPBS_SERVANT | SPBS_JUSTDEFAULT | SPBS_JUSTRIGHT |
+                        WS_TABSTOP | WS_VISIBLE
+        LTEXT           "%", 328, 146, 124, 13, 8, NOT WS_GROUP
+        LTEXT           "SWAPPER.DAT    >", 329, 20, 111, 83, 8, NOT
+                        WS_GROUP
+        CONTROL         "", IDC_THRESSWAP, 116, 109, 27, 12, WC_SPINBUTTON,
+                        SPBS_ALLCHARACTERS | SPBS_NUMERICONLY | SPBS_MASTER |
+                        SPBS_SERVANT | SPBS_JUSTDEFAULT | SPBS_JUSTRIGHT |
+                        WS_VISIBLE
+        LTEXT           "%", 330, 146, 111, 13, 8, NOT WS_GROUP
+        GROUPBOX        "Notification", 331, 8, 20, 159, 84
+        AUTOCHECKBOX    "Alarm - Free space", IDC_ALARMFREE, 19, 84, 128, 10
+        AUTOCHECKBOX    "Message - Free space", IDC_MESSAGEFREE, 19, 74, 122,
+                        10, NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_COMMANDFREE, 21, 63, 133, 8, ES_MARGIN | NOT
+                        WS_TABSTOP
+        AUTOCHECKBOX    "Alarm - SWAPPER.DAT", IDC_ALARMSWAP, 19, 47, 120,
+                        10, NOT WS_TABSTOP
+        AUTOCHECKBOX    "Message - SWAPPER.DAT", IDC_MESSAGESWAP, 19, 37,
+                        142, 10, NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_COMMANDSWAP, 21, 26, 134, 8, ES_MARGIN | NOT
+                        WS_TABSTOP
+        DEFPUSHBUTTON   "~Undo", DID_CANCEL, 8, 2, 40, 14, WS_GROUP
+        PUSHBUTTON      "~None", IDP_NONE, 60, 2, 40, 14, NOT WS_TABSTOP
+        PUSHBUTTON      "Help", IDP_REFHELP, 112, 2, 40, 14, BS_HELP |
+                        BS_NOPOINTERFOCUS | NOT WS_TABSTOP
+    END
+END
+
+DLGTEMPLATE IDD_GRAPH LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", IDD_GRAPH, 107, 23, 180, 160, NOT FS_DLGBORDER | WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Usage", 320, 8, 117, 76, 34
+        AUTORADIOBUTTON "Total space", IDB_TOTAL, 15, 132, 62, 10,
+                        BS_NOCURSORSELECT | WS_TABSTOP
+        AUTORADIOBUTTON "Used only", IDB_USED, 15, 122, 60, 10,
+                        BS_NOCURSORSELECT
+        GROUPBOX        "Directory Level", 321, 87, 117, 81, 34
+        AUTORADIOBUTTON "All ", IDB_ALLDIR, 94, 132, 61, 10,
+                        BS_NOCURSORSELECT | WS_TABSTOP
+        AUTORADIOBUTTON "1st level only", IDB_1ST, 94, 123, 69, 10,
+                        BS_NOCURSORSELECT
+        GROUPBOX        "Display", 323, 8, 74, 161, 42
+        AUTORADIOBUTTON "None", IDB_DISPLAYNONE, 22, 97, 70, 10,
+                        BS_NOCURSORSELECT | WS_TABSTOP
+        AUTORADIOBUTTON "Percentage", IDB_PERCENTON, 22, 87, 76, 10,
+                        BS_NOCURSORSELECT
+        AUTORADIOBUTTON "Actual size", IDB_SIZEON, 22, 77, 71, 10,
+                        BS_NOCURSORSELECT
+        GROUPBOX        "SWAPPER.DAT", 336, 8, 37, 161, 34
+        AUTOCHECKBOX    "Display separately in chart", IDC_SWAPPIE, 19, 52,
+                        135, 10
+        AUTOCHECKBOX    "Display size in status area", IDC_SWAPSTAT, 19, 41,
+                        134, 10, NOT WS_TABSTOP
+        LTEXT           "Maximum # of pies", 315, 9, 23, 87, 8
+        CONTROL         "", IDC_MAXPIES, 99, 21, 30, 12, WC_SPINBUTTON,
+                        SPBS_ALLCHARACTERS | SPBS_NUMERICONLY | SPBS_MASTER |
+                        SPBS_SERVANT | SPBS_JUSTDEFAULT | SPBS_JUSTRIGHT |
+                        WS_TABSTOP | WS_VISIBLE
+        DEFPUSHBUTTON   "~Undo", DID_CANCEL, 8, 2, 40, 14, WS_GROUP
+        PUSHBUTTON      "~Default", IDP_OPTDEF, 60, 2, 40, 14, NOT
+                        WS_TABSTOP
+        PUSHBUTTON      "Help", IDP_OPTHELP, 112, 2, 40, 14, BS_HELP |
+                        BS_NOPOINTERFOCUS | NOT WS_TABSTOP
+    END
+END
+
+DLGTEMPLATE IDD_DETAILS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Directory Details", IDD_DETAILS, 97, 66, 216, 92, WS_VISIBLE,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        LTEXT           "Directory", 342, 11, 76, 59, 8
+        LTEXT           "Level", 343, 11, 64, 45, 8
+        LTEXT           "Size", 344, 11, 52, 44, 8
+        LTEXT           "Cumulative Size", 345, 11, 40, 73, 8
+        LTEXT           "Number of Files", 346, 11, 28, 73, 8
+        LTEXT           "%", 347, 195, 52, 11, 8
+        LTEXT           "%", 348, 195, 40, 11, 8
+        ENTRYFIELD      "", IDE_DETDIR, 89, 76, 112, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_DETLEVEL, 89, 64, 12, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_DETSIZE, 89, 52, 67, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_DETPERC, 165, 52, 26, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_DETCUMSIZE, 89, 40, 67, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_DETCUMPERC, 165, 40, 26, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        ENTRYFIELD      "", IDE_DETFILES, 89, 28, 30, 8, ES_MARGIN |
+                        ES_READONLY | NOT WS_TABSTOP
+        DEFPUSHBUTTON   "OK", DID_OK, 10, 6, 40, 14
+    END
+END
+
+DLGTEMPLATE IDD_DIRECTORY LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Directory Name", IDD_DIRECTORY, 98, 82, 178, 68, WS_VISIBLE,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        LTEXT           "Target", 340, 10, 36, 31, 8
+        ENTRYFIELD      "", IDE_DIRECTORY, 45, 36, 121, 8, ES_MARGIN
+        LTEXT           "D:\\PATH", 341, 44, 48, 107, 8, NOT WS_GROUP
+        DEFPUSHBUTTON   "OK", DID_OK, 14, 7, 40, 14, WS_GROUP
+        PUSHBUTTON      "Cancel", DID_CANCEL, 70, 7, 40, 14, NOT WS_TABSTOP
+    END
+END
+
+DLGTEMPLATE IDD_OPTIONS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "", IDD_OPTIONS, 106, 20, 180, 160, NOT FS_DLGBORDER |
+            WS_VISIBLE
+    BEGIN
+        GROUPBOX        "Defaults", 335, 8, 72, 158, 71
+        AUTOCHECKBOX    "Show Directory List initially", IDC_DIRLIST, 16,
+                        122, 133, 10
+        AUTOCHECKBOX    "Show Legend initially", IDC_LEGEND, 16, 111, 134,
+                        10, NOT WS_TABSTOP
+        AUTOCHECKBOX    "Show All Drives Info initially", IDC_ALL, 16, 100,
+                        145, 10, NOT WS_TABSTOP
+        AUTOCHECKBOX    "Exit Confirmation message", IDC_EXIT, 16, 88, 137,
+                        10, NOT WS_TABSTOP
+        AUTOCHECKBOX    "Refresh Confirmation message", IDC_REFRESH, 16, 77,
+                        144, 10, NOT WS_TABSTOP
+        GROUPBOX        "Units", 334, 8, 24, 80, 43
+        AUTORADIOBUTTON "Bytes", IDB_BYTES, 18, 48, 39, 10,
+                        BS_NOCURSORSELECT | WS_TABSTOP
+        AUTORADIOBUTTON "Kilobytes", IDB_KBYTES, 18, 38, 59, 10,
+                        BS_NOCURSORSELECT
+        AUTORADIOBUTTON "Megabytes", IDB_MBYTES, 18, 28, 58, 10,
+                        BS_NOCURSORSELECT
+        GROUPBOX        "Directory Tree ", 561, 93, 24, 73, 43
+        AUTORADIOBUTTON "Left", IDB_LEFT, 103, 45, 39, 10, BS_NOCURSORSELECT |
+                        WS_TABSTOP
+        AUTORADIOBUTTON "Right", IDB_RIGHT, 104, 32, 55, 10,
+                        BS_NOCURSORSELECT
+        DEFPUSHBUTTON   "~Undo", DID_CANCEL, 8, 2, 40, 14, WS_GROUP
+        PUSHBUTTON      "~Default", IDP_SETDEF, 60, 2, 40, 14, NOT
+                        WS_TABSTOP
+        PUSHBUTTON      "Help", IDP_SETHELP, 112, 2, 40, 14, BS_HELP |
+                        BS_NOPOINTERFOCUS | NOT WS_TABSTOP
+    END
+END
+
+DLGTEMPLATE IDD_PRINT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Select Printer", IDD_PRINT, 128, 89, 217, 113, WS_VISIBLE,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        LISTBOX         IDL_PRINT, 10, 43, 196, 65
+        AUTOCHECKBOX    "Print graph", IDC_PRINTGRAPH, 11, 27, 117, 10,
+                        WS_GROUP
+        DEFPUSHBUTTON   "Print", DID_OK, 10, 8, 40, 14, WS_GROUP
+        PUSHBUTTON      "Job Properties", IDP_OPTDEF, 53, 8, 69, 14, NOT
+                        WS_TABSTOP
+        PUSHBUTTON      "Cancel", DID_CANCEL, 125, 8, 40, 14, NOT WS_TABSTOP
+        PUSHBUTTON      "Help", IDP_OPTHELP, 168, 8, 40, 14, BS_HELP |
+                        BS_NOPOINTERFOCUS | NOT WS_TABSTOP
+    END
+END
+
+DLGTEMPLATE IDD_PRINTSTATUS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Printing", IDD_PRINTSTATUS, 145, 98, 256, 82, WS_VISIBLE,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        LISTBOX         IDL_STATUS, 7, 32, 240, 47, LS_HORZSCROLL
+        PUSHBUTTON      "Stop", DID_CANCEL, 208, 11, 40, 14
+        ENTRYFIELD      "", IDB_SIZEON, 9, 16, 181, 7, NOT ES_AUTOSCROLL |
+                        ES_MARGIN | ES_READONLY
+        LTEXT           "0", 360, 7, 6, 11, 8
+        LTEXT           "50", 361, 95, 6, 12, 8
+        LTEXT           "100", 362, 183, 6, 18, 8
+    END
+END
+
+DLGTEMPLATE IDD_ABOUT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Product Information", IDD_ABOUT, 109, 40, 181, 129, WS_VISIBLE,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        DEFPUSHBUTTON   "OK", DID_OK, 71, 6, 40, 14
+        CTEXT           "DISKUSE", 302, 3, 86, 172, 8
+        CTEXT           "Version 1.52", 303, 3, 68, 172, 8
+        CTEXT           "Author: Ric Zapanta", 304, 3, 51, 172, 8
+        CTEXT           "(c) Copyright IBM Corp. 1993", 305, 4, 37, 172, 8
+        CONTROL         301, 301, 78, 103, 21, 16, WC_STATIC, SS_BITMAP |
+                        WS_GROUP | WS_VISIBLE
+        CTEXT           "PM Graphical Disk Usage", 306, 5, 77, 171, 8
+        CTEXT           "All rights Reserved.", 355, 4, 28, 174, 8
+    END
+END

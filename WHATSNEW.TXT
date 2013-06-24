@@ -1,0 +1,124 @@
+                          DISKUSE Version 1.52
+                         PM Graphical Disk Usage
+
+CHANGE HISTORY: See also Future Enhancements below.
+
+V1.52 11Sep94    Fix bug: Drives menu empty at startup only.
+
+V1.51 02Sep94    Refresh all windows when font has been changed.
+                 Show drive volume label in All Drives Information window.
+                 Make Root when double click item in Directory List window.
+                 Fix bug: Drives menu empty - thread timing problem.
+
+V1.5  28Aug94    Print support.
+                 Font support.
+                 Change Directory List from a listbox control to a
+                   container control to remove limit on total items.
+                 3D bottom status area.
+
+V1.4  07Jul93    Compile using OS/2 Toolkit V2.1
+                 Change Select Drive dialog to Drives menu
+                 New window - All Drive Information, /A
+                 Use single set of radio buttons for Graph Display
+
+V1.3  10May93    Notebook control for all settings (options, graph and
+                   automated refresh), non-modal
+                 New command line parameters: /P (specify where profile
+                   resides), /L (initial display of legend) and /D
+                   (initial display of directory list)
+
+V1.24 18Mar93   Bug fixes:
+                  - Find hidden, read only, system, archived directories
+                  - Use float when checking threshold limits
+
+V1.23 13Mar93   Add drive letter to the Directory List window.
+                Minimize/Restore the Directory List and Legend
+                  window when main window minimized/restored.
+                Option to display directory tree on right.
+                Bug fixes for:
+                  - Do not draw pie chart when window is very small.
+                  - Ensure main window active upon creation.
+
+V1.22 28Feb93   Bug fixes:
+                 - Clean up bitmap and icon.
+                 - Fix automated refresh timer interval.
+                 - Fix pie chart shading for slices > 30.
+
+V1.21 23Feb93   Bug fixes:
+                 - Fix bug when after directory delete, the main window
+                     becomes blank.
+
+V1.2  22Feb93   Bug fixes:
+                 - Fix bug when displaying SWAPPER.DAT size.
+                All windows go to the foreground when any of the DISKUSE
+                  windows are made active.
+                Double click on any pie slice to bring up the corresponding
+                  directory information in a dialog box.
+                Added more functionality to Directory List window, new
+                  menu pop-up appears when right button is clicked:
+                  Copy, delete, move and make "virtual root directory"
+                  the selected directory
+                Application initialization profile now saved in its own
+                  file (DISKUSE.INI) to allow multiple instances of
+                  DISKUSE to be brought up each having in its own profile
+                  (as long as different subdirectory). Please run MIGRINI
+                  to migrate the old DISKUSE profile to the new one.
+
+V1.13 13Feb93   Bug fixes:
+                 - If select to show SWAPPER.DAT on status area but not
+                   on graph, SWAPPER.DAT info not shown on status area.
+                 - Minimize main window and close using Window List,
+                   main window never shown anymore.
+                Increase maximum number of pies to 50.
+                Add new setting: Refresh prompt may now be turned off.
+                Use check boxes instead of dialog boxes in Settings.
+                Put SWAPPER.DAT information above status area.
+
+V1.12 06Feb93   Allow user command exit for warning notification. Entry
+                  field in Automated Refresh dialog box now enabled.
+
+V1.11 05Feb93   Fix timer bug for Auto Refresh when refresh interval
+                  set to > 1 minute. I didn't realize that WinStartTimer
+                  only accepts 65536 ms for it's time out parameter.
+                Allow only minutes (seconds removed) for refresh
+                  interval.
+
+V1.1  29Jan93   Improve multi-tasking, drive now read without locking up
+                  system.
+                Select drives now in separate dialog box (moved from
+                  Options dialog box).
+                Rename Options dialog box to Customize Graph, move
+                  Unit selection to Settings.
+                Size and position of all windows saved and restored.
+                Choose between % and actual size to be displayed on pie
+                  chart.
+                Optionally display the SWAPPER.DAT size as a separate
+                  pie slice or on the bottom status area.
+                Automated refresh facility with customizable refresh
+                  interval, threshold settings for free space and
+                  SWAPPER.DAT sizes as well as notification types.
+                Change fonts on Legend window (now 10 pt Monospace)
+
+V1.0  18Jan93   First release to OS2TOOLS.
+
+V0.3  10Jan93   Add diskette drives (A: and B:) as valid drives. Several
+                bugs fixes and incorporate suggestions by VB.
+
+V0.2  03Jan93   Scrollable legend window, display percentages on pie
+                chart, new Settings dialog window (to allow customize
+                of exit confirmation on/off, legend and directory list
+                on/off upon start.
+
+V0.1  16Dec92   First beta release.
+
+
+FUTURE ENHANCEMENTS:
+
+   - Currently known bugs:
+       No help when F1 is pressed in Directory List menu pop-up.
+   - Warning when any directory has grown by/to a user specified amount
+     (this may be very tricky to do!)
+   - Double click drive on All Drives Information window changes drives
+   - Identify largest files
+   - Thread disk processing (like Delete, Copy, etc.)
+   - Double click on Other pie results in a new pie with only Others
